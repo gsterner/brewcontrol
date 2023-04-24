@@ -3,6 +3,10 @@ import glob
 import time
 import csv
 
+UPPER_BOUND = 23
+LOWER_BOUND = 19
+MAX_POINTS = 200
+
 # These tow lines mount the device:
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -43,7 +47,7 @@ def write_csv(data_rows):
         for row in data_rows:
             writer.writerow(row)
 
-MAX_POINTS = 60
+
 def add_point(current_data, new_point):
     if len(current_data) > MAX_POINTS:
         current_data.pop(0)
@@ -55,6 +59,6 @@ print(' rom: '+ read_rom())
 while True:
     time_stamp = time.strftime("%H:%M:%S", time.localtime())
     celsius, farenheit = read_temp()
-    add_point(data_points, [time_stamp, celsius])
+    add_point(data_points, [time_stamp, celsius, UPPER_BOUND, LOWER_BOUND])
     print(time_stamp, ' C=%3.3f  F=%3.3f'% (celsius, farenheit))
 time.sleep(1)
